@@ -40,10 +40,6 @@ const typeDefs = `
         listAllComment: Comentario!
         queryReaction: Reacao!
     },
-    type Mutation{
-        createUser(nome:String!, idade:Int!):Usuario!
-        createPost(autor_id:ID!, texto:String!):Post!
-    }
 `;
 
 // Reaction - Type.:
@@ -73,46 +69,6 @@ const resolvers = {
                     texto: 'query Comment',
                 }
             },
-    },
-    Mutation: {
-        createUser(parent, args, ctx, info){
-            const usuario = {
-                id: uuidv4(),
-                nome: args.nome,
-                idade: args.idade,
-                posts: [],
-                comentarios:[],
-                reacao:[]
-
-            }
-            usuarios.push(usuario)
-            console.log(usuario)
-            console.log(usuarios)
-            return usuario
-        },
-        createPost(parent, args, ctx, info){
-            const usuario = usuarios.find((usuario) => {
-                return usuario.id == args.autor_id
-            })
-            if (!usuario){
-                throw new Error("User not found")
-            }
-            const post = {
-                id: uuidv4(),
-                texto: args.texto,
-                autor: usuario
-            }
-            usuario.posts.push(post)
-            posts.push(post)
-
-            var objIndex = usuarios.findIndex((usuario => usuario.id == args.autor_id));
-            usuarios[objIndex] = usuario
-
-            console.log(posts)
-            console.log(post)
-            console.log(usuarios)
-            return post
-        }
     },
 };
 
