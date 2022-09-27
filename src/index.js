@@ -25,7 +25,6 @@ const typeDefs = `
     type Comentario {
         id: ID!
         texto: String!
-        reacao:[Reacao!]!
         autor: Usuario!
         post: Post!
     },
@@ -43,6 +42,7 @@ const typeDefs = `
     type Mutation{
         createUser(nome:String!, idade:Int!):Usuario!
         createPost(autor_id:ID!, texto:String!):Post!
+        createComment(post_id:ID!, texto:String!):Comentario!
     }
 `;
 
@@ -100,7 +100,9 @@ const resolvers = {
             const post = {
                 id: uuidv4(),
                 texto: args.texto,
-                autor: usuario
+                autor: usuario,
+                comentarios:[],
+                reacao:[]
             }
             usuario.posts.push(post)
             posts.push(post)
@@ -108,6 +110,29 @@ const resolvers = {
             //console.log(post)
             //console.log(usuarios)
             return post
+        },
+        createComment(parent, args, ctx, info){
+            const post = posts.find((post) => {
+                return post.id == args.post_id
+            })
+            if (!post){
+                throw new Error("Post not found")
+            }
+
+            const comment = {
+                id: uuidv4(),
+                texto: args.texto,
+                autor: post.autor,
+                post: post
+            }
+
+            post.comentarios.push(comment)
+            comentarios.push(comment)
+            //console.log(comentarios)
+            //console.log(comment)
+            //console.log(usuarios)
+            //console.log(post)
+            return comment
         }
     },
 };
