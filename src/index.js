@@ -43,6 +43,7 @@ const typeDefs = `
         createUser(nome:String!, idade:Int!):Usuario!
         createPost(autor_id:ID!, texto:String!):Post!
         createComment(post_id:ID!, texto:String!):Comentario!
+        createReaction(post_id:ID!, autor_id:ID!, reaction:Boolean!):Reacao!
     }
 `;
 
@@ -133,6 +134,47 @@ const resolvers = {
             //console.log(usuarios)
             //console.log(post)
             return comment
+        },
+        createReaction(parent, args, ctx, info){
+            const post = posts.find((post) => {
+                return post.id == args.post_id
+            })
+            if (!post){
+                throw new Error("Post not found")
+            }
+
+            const usuario = usuarios.find((usuario) => {
+                return usuario.id == args.autor_id
+            })
+            if (!usuario){
+                throw new Error("User not found")
+            }
+
+            const userreacted = posts.find((usuario) => {
+                return usuario.id == args.autor_id
+            })
+            if (!userreacted){
+                const reaction = {
+                    id: uuidv4(),
+                    tipo: args.reaction,
+                    autor: usuario.id
+                }
+    
+                usuario.reacao.push(reaction)
+                post.reacao.push(reaction)
+                reacaos.push(reaction)
+                //console.log(usuarios)
+                //console.log("---------------------")
+                //console.log(posts)
+                //console.log("---------------------")
+                //console.log(reacaos)
+                //console.log("---------------------")
+                //console.log(reaction)
+                return reaction
+
+            } else {
+                throw new Error("User has reacted before")
+            }
         }
     },
 };
