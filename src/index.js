@@ -86,8 +86,8 @@ const resolvers = {
 
             }
             usuarios.push(usuario)
-            console.log(usuario)
-            console.log(usuarios)
+            //console.log(usuario)
+            //console.log(usuarios)
             return usuario
         },
         createPost(parent, args, ctx, info){
@@ -104,13 +104,9 @@ const resolvers = {
             }
             usuario.posts.push(post)
             posts.push(post)
-
-            var objIndex = usuarios.findIndex((usuario => usuario.id == args.autor_id));
-            usuarios[objIndex] = usuario
-
-            console.log(posts)
-            console.log(post)
-            console.log(usuarios)
+            //console.log(posts)
+            //console.log(post)
+            //console.log(usuarios)
             return post
         }
     },
