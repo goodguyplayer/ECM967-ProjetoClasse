@@ -34,15 +34,15 @@ const typeDefs = `
         autor: Usuario!
     },
     type Query {
-        listAllUsers: Usuario!
-        listAllPosts: Post!
-        listAllComment: Comentario!
+        listAllUsers: [Usuario!]!
+        listAllPosts: [Post!]!
+        listAllComment: [Comentario!]!
         queryReaction: Reacao!
     },
     type Mutation{
         createUser(nome:String!, idade:Int!):Usuario!
         createPost(autor_id:ID!, texto:String!):Post!
-        createComment(post_id:ID!, texto:String!):Comentario!
+        createComment(post_id:ID!, autor_id:ID!, texto:String!):Comentario!
         createReaction(post_id:ID!, autor_id:ID!, reaction:Boolean!):Reacao!
     }
 `;
@@ -56,23 +56,13 @@ tipo == true, like
 const resolvers = {
     Query: {
             listAllUsers() {
-                return {
-                    id: '123456',
-                    nome: "query User",
-                    idade: 22,
-                }
+                return usuarios
             },
             listAllPosts() {
-                return {
-                    id: '123456',
-                    texto: 'query Post',
-                }
+                return posts
             },
             listAllComment() {
-                return {
-                    id: '123456',
-                    texto: 'query Comment',
-                }
+                return comentarios
             },
     },
     Mutation: {
@@ -120,13 +110,21 @@ const resolvers = {
                 throw new Error("Post not found")
             }
 
+            const usuario = usuarios.find((usuario) => {
+                return usuario.id == args.autor_id
+            })
+            if (!usuario){
+                throw new Error("User not found")
+            }
+
             const comment = {
                 id: uuidv4(),
                 texto: args.texto,
-                autor: post.autor,
+                autor: usuario,
                 post: post
             }
 
+            usuario.comentarios.push(comment)
             post.comentarios.push(comment)
             comentarios.push(comment)
             //console.log(comentarios)
