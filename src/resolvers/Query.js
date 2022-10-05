@@ -1,4 +1,4 @@
-import {usuarios, posts, comentarios} from './db'
+import {usuarios, posts, comentarios} from '../db'
 
 const Query = {
     listAllUsers() {

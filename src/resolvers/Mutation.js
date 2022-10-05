@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import {usuarios, posts, comentarios, reacaos} from './db'
+import {usuarios, posts, comentarios, reacaos} from '../db'
 
 const Mutation = {
     createUser(parent, args, ctx, info) {
