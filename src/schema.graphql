@@ -3,7 +3,7 @@ type Usuario {
     id: ID!
     nome: String!
     idade: Int!
-    posts:[Post!]!
+    post:[Post!]!
     comentarios:[Comentario!]!
     reacao:[Reacao!]!
 }
@@ -31,9 +31,31 @@ type Query {
     listAllComment: [Comentario!]!
     queryReaction: Reacao!
 }
+
 type Mutation{
-    createUser(nome:String!, idade:Int!):Usuario!
-    createPost(autor_id:ID!, texto:String!):Post!
-    createComment(post_id:ID!, autor_id:ID!, texto:String!):Comentario!
-    createReaction(post_id:ID!, autor_id:ID!, reaction:Boolean!):Reacao!
+    createUser(usuario: CreateUserInput):Usuario!
+    createPost(post: CreatePostInput):Post!
+    createComment(comentario: CreateCommentInput):Comentario!
+    createReaction(reaction: CreateReactionInput):Reacao!
+}
+
+input CreateUserInput{
+  nome: String!
+  idade: Int
+}
+
+input CreatePostInput{
+  texto: String!
+  autor: ID!
+}
+
+input CreateCommentInput{
+  texto: String!
+  autor: ID!
+  post: ID!
+}
+
+input CreateReactionInput{
+  tipo: Boolean!
+  autor: ID!
 }

@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-import {usuarios, posts, comentarios, reacaos} from './db'
 
 const Mutation = {
     createUser(parent, args, ctx, info) {
@@ -7,16 +6,15 @@ const Mutation = {
             id: uuidv4(),
             nome: args.nome,
             idade: args.idade,
-            posts: [],
-            comentarios: [],
-            reacao: []
-
+            // post: [],
+            // comentarios: [],
+            // reacao: []
         }
-        usuarios.push(usuario)
+        ctx.db.usuarios.push(usuario)
         return usuario
     },
     createPost(parent, args, ctx, info) {
-        const usuario = usuarios.find((usuario) => {
+        const usuario = ctx.db.usuarios.find((usuario) => {
             return usuario.id == args.autor_id
         })
         if (!usuario) {
@@ -26,22 +24,21 @@ const Mutation = {
             id: uuidv4(),
             texto: args.texto,
             autor: usuario,
-            comentarios: [],
-            reacao: []
+            // comentarios: [],
+            // reacao: []
         }
-        usuario.posts.push(post)
-        posts.push(post)
+        usuario.post.push(post)
         return post
     },
     createComment(parent, args, ctx, info) {
-        const post = posts.find((post) => {
+        const post = ctx.db.post.find((post) => {
             return post.id == args.post_id
         })
         if (!post) {
             throw new Error("Post not found")
         }
 
-        const usuario = usuarios.find((usuario) => {
+        const usuario = ctx.db.usuarios.find((usuario) => {
             return usuario.id == args.autor_id
         })
         if (!usuario) {
@@ -61,21 +58,21 @@ const Mutation = {
         return comment
     },
     createReaction(parent, args, ctx, info) {
-        const post = posts.find((post) => {
+        const post = ctx.db.post.find((post) => {
             return post.id == args.post_id
         })
         if (!post) {
             throw new Error("Post not found")
         }
 
-        const usuario = usuarios.find((usuario) => {
+        const usuario = ctx.db.usuarios.find((usuario) => {
             return usuario.id == args.autor_id
         })
         if (!usuario) {
             throw new Error("User not found")
         }
 
-        const userreacted = posts.find((usuario) => {
+        const userreacted = ctx.db.post.find((usuario) => {
             return usuario.id == args.autor_id
         })
         if (!userreacted) {
@@ -87,7 +84,7 @@ const Mutation = {
 
             usuario.reacao.push(reaction)
             post.reacao.push(reaction)
-            reacaos.push(reaction)
+            reacao.push(reaction)
             return reaction
 
         } else {
