@@ -8,6 +8,11 @@ const usuarios = [
         id: '2',
         nome: 'Asuka',
         idade: 18
+    },
+    {
+        id: '3',
+        nome: 'Abdul',
+        idade: 18
     }
 ]
 const post = [
@@ -28,8 +33,21 @@ const comentarios = [
 const reacao = [
     {
         id: '1',
-        tipo: false,
+        post_id: '1',
+        tipo: true,
         autor: '1'
+    },
+    {
+        id: '2',
+        post_id: '1',
+        tipo: false,
+        autor: '2'
+    },
+    {
+        id: '3',
+        post_id: '1',
+        tipo: true,
+        autor: '3'
     }
 ] 
 

@@ -6,6 +6,7 @@ import Comentario from './resolvers/Comentario'
 import Reacao from './resolvers/Reacao'
 import Post from './resolvers/Post'
 import db from './db'
+import reacaoCalculator from './resolvers/ReacaoCalculator'
 import * as fs from 'fs'
 
 const resolvers = {

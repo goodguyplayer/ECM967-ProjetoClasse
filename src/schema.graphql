@@ -22,14 +22,16 @@ type Comentario {
 }
 type Reacao {
     id: ID!
+    post: Post!
     tipo: Boolean!
     autor: Usuario!
+    post_id: ID!
 }
 type Query {
     listAllUsers: [Usuario!]!
     listAllPosts: [Post!]!
     listAllComment: [Comentario!]!
-    queryReaction: Reacao!
+    queryReaction: String!
 }
 
 type Mutation{
