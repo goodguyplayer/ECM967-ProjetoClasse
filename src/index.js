@@ -1,82 +1,27 @@
 import { createServer } from '@graphql-yoga/node'
-import { v4 as uuidv4 } from "uuid";
-
-const usuarios = [] 
-const posts = [] 
-const comentarios = [] 
-const reacaos = [] 
-
-const typeDefs = `
-    type Usuario {
-        id: ID!
-        nome: String!
-        idade: Int!
-        posts:[Post!]!
-        comentarios:[Comentario!]!
-        reacao:[Reacao!]!
-    },
-    type Post {
-        id: ID!
-        texto: String!
-        comentarios:[Comentario!]!
-        autor: Usuario!
-        reacao:[Reacao!]!
-    },
-    type Comentario {
-        id: ID!
-        texto: String!
-        reacao:[Reacao!]!
-        autor: Usuario!
-        post: Post!
-    },
-    type Reacao {
-        id: ID!
-        tipo: Boolean!
-        autor: Usuario!
-    },
-    type Query {
-        listAllUsers: Usuario!
-        listAllPosts: Post!
-        listAllComment: Comentario!
-        queryReaction: Reacao!
-    },
-`;
-
-// Reaction - Type.:
-/*
-tipo == false, dislike
-tipo == true, like
-*/
+import Query from './resolvers/Query'
+import Mutation from './resolvers/Mutation'
+import Usuario from './resolvers/Usuario'
+import Comentario from './resolvers/Comentario'
+import Reacao from './resolvers/Reacao'
+import Post from './resolvers/Post'
+import db from './db'
+import * as fs from 'fs'
 
 const resolvers = {
-    Query: {
-            listAllUsers() {
-                return {
-                    id: '123456',
-                    nome: "query User",
-                    idade: 22,
-                }
-            },
-            listAllPosts() {
-                return {
-                    id: '123456',
-                    texto: 'query Post',
-                }
-            },
-            listAllComment() {
-                return {
-                    id: '123456',
-                    texto: 'query Comment',
-                }
-            },
-    },
-};
+    Query: Query,
+    Mutation: Mutation,
+    Usuario: Usuario,
+    Comentario: Comentario,
+    Reacao: Reacao,
+    Post: Post,
+}
 
 const server = createServer ({
     schema: {
-        typeDefs,
-        resolvers
-    }
+        typeDefs: fs.readFileSync('./src/schema.graphql', 'utf-8'), resolvers
+    },
+    context: {db: db}
 })
 
 server.start(() => {

@@ -1,0 +1,63 @@
+#arquivo schema.graphql
+type Usuario {
+    id: ID!
+    nome: String!
+    idade: Int!
+    post:[Post!]!
+    comentarios:[Comentario!]!
+    reacao:[Reacao!]!
+}
+type Post {
+    id: ID!
+    texto: String!
+    comentarios:[Comentario!]!
+    autor: Usuario!
+    reacao:[Reacao!]!
+}
+type Comentario {
+    id: ID!
+    texto: String!
+    autor: Usuario!
+    post: Post!
+}
+type Reacao {
+    id: ID!
+    post: Post!
+    tipo: Boolean!
+    autor: Usuario!
+    post_id: ID!
+}
+type Query {
+    listAllUsers: [Usuario!]!
+    listAllPosts: [Post!]!
+    listAllComment: [Comentario!]!
+    queryReaction: String!
+}
+
+type Mutation{
+    createUser(usuario: CreateUserInput):Usuario!
+    createPost(post: CreatePostInput):Post!
+    createComment(comentario: CreateCommentInput):Comentario!
+    createReaction(reaction: CreateReactionInput):Reacao!
+}
+
+input CreateUserInput{
+  nome: String!
+  idade: Int
+}
+
+input CreatePostInput{
+  texto: String!
+  autor: ID!
+}
+
+input CreateCommentInput{
+  texto: String!
+  autor: ID!
+  post: ID!
+}
+
+input CreateReactionInput{
+  tipo: Boolean!
+  autor: ID!
+}
