@@ -6,9 +6,6 @@ const Mutation = {
             id: uuidv4(),
             nome: args.nome,
             idade: args.idade,
-            // post: [],
-            // comentarios: [],
-            // reacao: []
         }
         ctx.db.usuarios.push(usuario)
         return usuario
@@ -24,8 +21,6 @@ const Mutation = {
             id: uuidv4(),
             texto: args.texto,
             autor: usuario,
-            // comentarios: [],
-            // reacao: []
         }
         usuario.post.push(post)
         return post
